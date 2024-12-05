@@ -23,9 +23,9 @@ const DIRECTIONS = {
 
 function startGame() {
     username = document.getElementById('usernameInput').value || 'Player';
-    document.getElementById('username').style.display = 'none';
-    document.addEventListener('keydown', changeDirection);
-    gameLoop();
+    document.getElementById('username').style.display = 'none'; // Hide the username input form
+    gameLoop(); // Start the game loop
+    document.addEventListener('keydown', changeDirection); // Listen for keydown events to change direction
 }
 
 function changeDirection(event) {
@@ -47,11 +47,11 @@ function generateFood() {
 }
 
 function gameLoop() {
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width, height); // Clear the canvas before drawing
 
     // Move snake
     let head = {x: snake[0].x + DIRECTIONS[direction].x, y: snake[0].y + DIRECTIONS[direction].y};
-    snake.unshift(head);
+    snake.unshift(head); // Add new head to the snake
 
     // Check for collisions with walls or snake itself
     if (head.x < 0 || head.x >= width || head.y < 0 || head.y >= height || isCollisionWithSnake(head)) {
@@ -62,19 +62,18 @@ function gameLoop() {
     // Check if snake eats food
     if (head.x === food.x && head.y === food.y) {
         score++;
-        food = generateFood();
+        food = generateFood(); // Generate new food
         speed = Math.max(50, speed - 5);  // Increase speed
     } else {
-        snake.pop();
+        snake.pop(); // Remove the tail if no food is eaten
     }
 
     // Draw everything
     drawSnake();
     drawFood();
     drawScore();
-    updateChasers();
     
-    setTimeout(gameLoop, speed);
+    setTimeout(gameLoop, speed); // Recursive call to keep the game running
 }
 
 function drawSnake() {
@@ -98,7 +97,7 @@ function drawScore() {
 function isCollisionWithSnake(head) {
     for (let i = 1; i < snake.length; i++) {
         if (snake[i].x === head.x && snake[i].y === head.y) {
-            return true;
+            return true; // Collision with snake body
         }
     }
     return false;
@@ -111,9 +110,9 @@ function gameOver() {
     ctx.fillText('Game Over!', width / 2 - 90, height / 2);
     ctx.fillText('Score: ' + score, width / 2 - 60, height / 2 + 40);
     setTimeout(() => {
-        document.getElementById('username').style.display = 'block';
+        document.getElementById('username').style.display = 'block'; // Show username input again
     }, 2000);
 }
 
 // Initialize game start screen
-document.getElementById('username').style.display = 'block';
+document.getElementById('username').style.display = 'block'; // Show username input initially
