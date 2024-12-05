@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game - Web Version</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid white;
+            display: block;
+            margin: 0 auto;
+        }
+        #username {
+            display: none;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Snake Game - Extreme Mode</h1>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <div id="username">
+        <label for="usernameInput">Enter your username:</label>
+        <input type="text" id="usernameInput" />
+        <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <script src="snakeGame.js"></script>
+</body>
+</html>
